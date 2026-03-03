@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Digital Twin - Launcher</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+         /* Add splash screen styles */
+         #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1d1d1e;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+        
+        #splash-logo {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 30px;
+            animation: pulse 3s infinite, fadeIn 1.5s ease-out;
+        }
+        
+        #start-button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #7428a7, #17a2b8);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: fadeIn 2s ease-out;
+        }
+        
+        #start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+     <!-- Splash Screen -->
+     <div id="splash-screen">
+        <img src="logo.png" alt="AUTOPULSE Logo" id="splash-logo">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:320px;margin:0 auto;">
+            <a href="parameter_setup.html" id="start-button" class="btn btn-primary" style="width:100%;font-size:18px;padding:12px 0;border-radius:50px;background:linear-gradient(135deg,#7428a7,#17a2b8);font-weight:600;">Start New Simulation</a>
+            <a href="index.html" id="continueBtn" class="btn btn-outline-secondary" style="width:90%;font-size:14px;padding:10px ;border-radius:50px;">Continue with Previous Configuration</a>
+        </div>
+    </div>
+    <script>
+        // Disable continue button if no previous config
+        document.addEventListener('DOMContentLoaded', function() {
+            const hasParameters = localStorage.getItem('evSimulationParameters');
+            const continueBtn = document.getElementById('continueBtn');
+            if (!hasParameters) {
+                continueBtn.style.opacity = '0.5';
+                continueBtn.style.pointerEvents = 'none';
+                continueBtn.textContent = 'No Previous Configuration';
+            }
+        });
+    </script>
+</body>
+</html> 

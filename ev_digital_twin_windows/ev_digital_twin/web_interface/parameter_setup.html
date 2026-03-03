@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Digital Twin - Parameter Setup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .setup-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #7428a7, #17a2b8);
+            color: white;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .parameter-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #7428a7;
+        }
+        
+        .parameter-section h3 {
+            color: #7428a7;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #7428a7;
+            box-shadow: 0 0 0 0.2rem rgba(116, 40, 167, 0.25);
+        }
+        
+        .input-group-text {
+            background-color: #7428a7;
+            color: white;
+            border: 2px solid #7428a7;
+            border-radius: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #7428a7, #17a2b8);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .preset-btn {
+            background: #e9ecef;
+            border: 2px solid #dee2e6;
+            border-radius: 25px;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .preset-btn:hover {
+            background: #7428a7;
+            color: white;
+            border-color: #7428a7;
+        }
+        
+        .preset-btn.active {
+            background: #7428a7;
+            color: white;
+            border-color: #7428a7;
+        }
+        
+        .parameter-info {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .parameter-info h6 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .parameter-info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #424242;
+        }
+        
+        .validation-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .validation-success {
+            color: #28a745;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 0 0 15px 15px;
+            text-align: center;
+            color: #6c757d;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 10px;
+            position: relative;
+        }
+        
+        .progress-step.active {
+            background-color: #7428a7;
+            color: white;
+        }
+        
+        .progress-step.completed {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .progress-step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            width: 60px;
+            height: 2px;
+            background-color: #e9ecef;
+            transform: translateY(-50%);
+        }
+        
+        .progress-step:last-child::after {
+            display: none;
+        }
+        
+        .progress-step.completed::after {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="setup-container">
+            <!-- Header -->
+            <div class="header">
+                <h1>Electric Vehicle Digital Twin</h1>
+                <p>Configure your vehicle parameters before starting the simulation</p>
+            </div>
+            
+            <!-- Progress Indicator -->
+            <div class="progress-indicator">
+                <div class="progress-step active" id="step1">1</div>
+                <div class="progress-step" id="step2">2</div>
+                <div class="progress-step" id="step3">3</div>
+                <div class="progress-step" id="step4">4</div>
+            </div>
+            
+            <!-- Content -->
+            <div class="content">
+                <form id="parameterForm">
+                    <!-- Step 1: Vehicle Presets -->
+                    <div class="parameter-section" id="step1-content">
+                        <h3>Step 1: Choose Vehicle Type</h3>
+                        <p class="text-muted mb-4">Select a vehicle preset or choose custom configuration</p>
+                        
+                        <div class="preset-buttons">
+                            <button type="button" class="preset-btn active" data-preset="sedan">Sedan</button>
+                            <button type="button" class="preset-btn" data-preset="suv">SUV</button>
+                            <button type="button" class="preset-btn" data-preset="sports">Sports Car</button>
+                            <button type="button" class="preset-btn" data-preset="commercial">Commercial</button>
+                            <button type="button" class="preset-btn" data-preset="custom">Custom</button>
+                        </div>
+                        
+                        <div class="parameter-info">
+                            <h6>Vehicle Presets</h6>
+                            <p><strong>Sedan:</strong> Standard passenger vehicle with balanced performance</p>
+                            <p><strong>SUV:</strong> Larger vehicle with higher mass and drag coefficient</p>
+                            <p><strong>Sports Car:</strong> High-performance vehicle with optimized aerodynamics</p>
+                            <p><strong>Commercial:</strong> Heavy-duty vehicle with high capacity and power</p>
+                            <p><strong>Custom:</strong> Configure all parameters manually</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Battery Configuration -->
+                    <div class="parameter-section" id="step2-content" style="display: none;">
+                        <h3>Step 2: Battery Configuration</h3>
+                        <p class="text-muted mb-4">Configure battery pack specifications</p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="batteryCapacity" class="form-label">Battery Capacity</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="batteryCapacity" value="75.0" min="20" max="200" step="0.1">
+                                        <span class="input-group-text">kWh</span>
+                                    </div>
+                                    <div class="validation-success">✓ Valid capacity range</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="batteryVoltage" class="form-label">Nominal Voltage</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="batteryVoltage" value="400.0" min="200" max="800" step="1">
+                                        <span class="input-group-text">V</span>
+                                    </div>
+                                    <div class="validation-success">✓ Valid voltage range</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cellsSeries" class="form-label">Cells in Series</label>
+                                    <input type="number" class="form-control" id="cellsSeries" value="96" min="50" max="200" step="1">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cellsParallel" class="form-label">Cells in Parallel</label>
+                                    <input type="number" class="form-control" id="cellsParallel" value="4" min="1" max="20" step="1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="initialSOC" class="form-label">Initial State of Charge</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="initialSOC" value="90" min="10" max="100" step="1">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="initialSOH" class="form-label">Initial State of Health</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="initialSOH" value="95" min="70" max="100" step="1">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="parameter-info">
+                            <h6>Battery Configuration Guide</h6>
+                            <p><strong>Capacity:</strong> Total energy storage capacity (20-200 kWh)</p>
+                            <p><strong>Voltage:</strong> Nominal pack voltage (200-800V)</p>
+                            <p><strong>Cells:</strong> Series/parallel configuration affects voltage and current</p>
+                            <p><strong>SOC:</strong> Starting charge level (10-100%)</p>
+                            <p><strong>SOH:</strong> Battery health and degradation level (70-100%)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Motor Configuration -->
+                    <div class="parameter-section" id="step3-content" style="display: none;">
+                        <h3>Step 3: Motor Configuration</h3>
+                        <p class="text-muted mb-4">Configure electric motor specifications</p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="motorPower" class="form-label">Motor Power</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="motorPower" value="150.0" min="50" max="500" step="1">
+                                        <span class="input-group-text">kW</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="motorSpeed" class="form-label">Nominal Speed</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="motorSpeed" value="8000" min="3000" max="15000" step="100">
+                                        <span class="input-group-text">rpm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="motorType" class="form-label">Motor Type</label>
+                                    <select class="form-select" id="motorType">
+                                        <option value="PMSM">PMSM (Permanent Magnet Synchronous)</option>
+                                        <option value="BLDC">BLDC (Brushless DC)</option>
+                                        <option value="IM">IM (Induction Motor)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="polePairs" class="form-label">Pole Pairs</label>
+                                    <input type="number" class="form-control" id="polePairs" value="4" min="2" max="8" step="1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="motorEfficiency" class="form-label">Base Efficiency</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="motorEfficiency" value="92" min="80" max="98" step="1">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="motorHealth" class="form-label">Initial Motor Health</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="motorHealth" value="95" min="70" max="100" step="1">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="parameter-info">
+                            <h6>Motor Configuration Guide</h6>
+                            <p><strong>Power:</strong> Maximum continuous power output (50-500 kW)</p>
+                            <p><strong>Speed:</strong> Nominal operating speed (3000-15000 rpm)</p>
+                            <p><strong>Type:</strong> Motor technology affects efficiency and characteristics</p>
+                            <p><strong>Pole Pairs:</strong> Affects motor speed and torque characteristics</p>
+                            <p><strong>Efficiency:</strong> Base efficiency at nominal operating conditions</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4: Vehicle Parameters -->
+                    <div class="parameter-section" id="step4-content" style="display: none;">
+                        <h3>Step 4: Vehicle Parameters</h3>
+                        <p class="text-muted mb-4">Configure vehicle physical characteristics</p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vehicleMass" class="form-label">Vehicle Mass</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="vehicleMass" value="2000" min="800" max="5000" step="50">
+                                        <span class="input-group-text">kg</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dragCoefficient" class="form-label">Drag Coefficient</label>
+                                    <input type="number" class="form-control" id="dragCoefficient" value="0.28" min="0.2" max="0.8" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="frontalArea" class="form-label">Frontal Area</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="frontalArea" value="2.3" min="1.5" max="4.0" step="0.1">
+                                        <span class="input-group-text">m²</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rollingResistance" class="form-label">Rolling Resistance</label>
+                                    <input type="number" class="form-control" id="rollingResistance" value="0.01" min="0.005" max="0.02" step="0.001">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="wheelRadius" class="form-label">Wheel Radius</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="wheelRadius" value="0.33" min="0.25" max="0.45" step="0.01">
+                                        <span class="input-group-text">m</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gearRatio" class="form-label">Gear Ratio</label>
+                                    <input type="number" class="form-control" id="gearRatio" value="9.0" min="5" max="15" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="parameter-info">
+                            <h6>Vehicle Parameters Guide</h6>
+                            <p><strong>Mass:</strong> Total vehicle weight affects acceleration and energy consumption</p>
+                            <p><strong>Drag Coefficient:</strong> Aerodynamic efficiency (lower is better)</p>
+                            <p><strong>Frontal Area:</strong> Cross-sectional area for aerodynamic calculations</p>
+                            <p><strong>Rolling Resistance:</strong> Tire and road friction coefficient</p>
+                            <p><strong>Wheel Radius:</strong> Affects speed and torque calculations</p>
+                            <p><strong>Gear Ratio:</strong> Transmission ratio between motor and wheels</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Previous</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+                        <button type="button" class="btn btn-primary" id="startBtn" style="display: none;">Start Simulation</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <p>Electric Vehicle Digital Twin - Parameter Configuration</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vehicle presets
+        const vehiclePresets = {
+            sedan: {
+                batteryCapacity: 75.0,
+                batteryVoltage: 400.0,
+                cellsSeries: 96,
+                cellsParallel: 4,
+                motorPower: 150.0,
+                motorSpeed: 8000,
+                vehicleMass: 2000,
+                dragCoefficient: 0.28,
+                frontalArea: 2.3,
+                rollingResistance: 0.01,
+                wheelRadius: 0.33,
+                gearRatio: 9.0
+            },
+            suv: {
+                batteryCapacity: 100.0,
+                batteryVoltage: 400.0,
+                cellsSeries: 96,
+                cellsParallel: 6,
+                motorPower: 200.0,
+                motorSpeed: 7000,
+                vehicleMass: 2500,
+                dragCoefficient: 0.35,
+                frontalArea: 2.8,
+                rollingResistance: 0.012,
+                wheelRadius: 0.35,
+                gearRatio: 8.5
+            },
+            sports: {
+                batteryCapacity: 85.0,
+                batteryVoltage: 800.0,
+                cellsSeries: 192,
+                cellsParallel: 2,
+                motorPower: 300.0,
+                motorSpeed: 12000,
+                vehicleMass: 1800,
+                dragCoefficient: 0.25,
+                frontalArea: 2.0,
+                rollingResistance: 0.008,
+                wheelRadius: 0.32,
+                gearRatio: 10.0
+            },
+            commercial: {
+                batteryCapacity: 150.0,
+                batteryVoltage: 600.0,
+                cellsSeries: 144,
+                cellsParallel: 8,
+                motorPower: 250.0,
+                motorSpeed: 6000,
+                vehicleMass: 3500,
+                dragCoefficient: 0.45,
+                frontalArea: 3.5,
+                rollingResistance: 0.015,
+                wheelRadius: 0.38,
+                gearRatio: 7.5
+            }
+        };
+
+        let currentStep = 1;
+        let selectedPreset = 'sedan';
+
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up preset buttons
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    selectedPreset = this.dataset.preset;
+                    
+                    if (selectedPreset !== 'custom') {
+                        applyPreset(selectedPreset);
+                    }
+                });
+            });
+
+            // Set up navigation buttons
+            document.getElementById('nextBtn').addEventListener('click', nextStep);
+            document.getElementById('prevBtn').addEventListener('click', prevStep);
+            document.getElementById('startBtn').addEventListener('click', startSimulation);
+
+            // Apply initial preset
+            applyPreset('sedan');
+        });
+
+        function applyPreset(preset) {
+            if (preset === 'custom') return;
+            
+            const config = vehiclePresets[preset];
+            
+            // Apply battery parameters
+            document.getElementById('batteryCapacity').value = config.batteryCapacity;
+            document.getElementById('batteryVoltage').value = config.batteryVoltage;
+            document.getElementById('cellsSeries').value = config.cellsSeries;
+            document.getElementById('cellsParallel').value = config.cellsParallel;
+            
+            // Apply motor parameters
+            document.getElementById('motorPower').value = config.motorPower;
+            document.getElementById('motorSpeed').value = config.motorSpeed;
+            
+            // Apply vehicle parameters
+            document.getElementById('vehicleMass').value = config.vehicleMass;
+            document.getElementById('dragCoefficient').value = config.dragCoefficient;
+            document.getElementById('frontalArea').value = config.frontalArea;
+            document.getElementById('rollingResistance').value = config.rollingResistance;
+            document.getElementById('wheelRadius').value = config.wheelRadius;
+            document.getElementById('gearRatio').value = config.gearRatio;
+        }
+
+        function nextStep() {
+            if (currentStep < 4) {
+                // Hide current step
+                document.getElementById(`step${currentStep}-content`).style.display = 'none';
+                
+                // Show next step
+                currentStep++;
+                document.getElementById(`step${currentStep}-content`).style.display = 'block';
+                
+                // Update progress indicator
+                updateProgressIndicator();
+                
+                // Update navigation buttons
+                updateNavigationButtons();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                // Hide current step
+                document.getElementById(`step${currentStep}-content`).style.display = 'none';
+                
+                // Show previous step
+                currentStep--;
+                document.getElementById(`step${currentStep}-content`).style.display = 'block';
+                
+                // Update progress indicator
+                updateProgressIndicator();
+                
+                // Update navigation buttons
+                updateNavigationButtons();
+            }
+        }
+
+        function updateProgressIndicator() {
+            // Update step indicators
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step${i}`);
+                step.classList.remove('active', 'completed');
+                
+                if (i < currentStep) {
+                    step.classList.add('completed');
+                } else if (i === currentStep) {
+                    step.classList.add('active');
+                }
+            }
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const startBtn = document.getElementById('startBtn');
+            
+            if (currentStep === 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'inline-block';
+                startBtn.style.display = 'none';
+            } else if (currentStep === 4) {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'none';
+                startBtn.style.display = 'inline-block';
+            } else {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.style.display = 'inline-block';
+                startBtn.style.display = 'none';
+            }
+        }
+
+        function startSimulation() {
+            // Collect all parameters
+            const parameters = {
+                // Battery parameters
+                batteryCapacity: parseFloat(document.getElementById('batteryCapacity').value),
+                batteryVoltage: parseFloat(document.getElementById('batteryVoltage').value),
+                cellsSeries: parseInt(document.getElementById('cellsSeries').value),
+                cellsParallel: parseInt(document.getElementById('cellsParallel').value),
+                initialSOC: parseFloat(document.getElementById('initialSOC').value) / 100,
+                initialSOH: parseFloat(document.getElementById('initialSOH').value) / 100,
+                
+                // Motor parameters
+                motorPower: parseFloat(document.getElementById('motorPower').value),
+                motorSpeed: parseFloat(document.getElementById('motorSpeed').value),
+                motorType: document.getElementById('motorType').value,
+                polePairs: parseInt(document.getElementById('polePairs').value),
+                motorEfficiency: parseFloat(document.getElementById('motorEfficiency').value) / 100,
+                motorHealth: parseFloat(document.getElementById('motorHealth').value) / 100,
+                
+                // Vehicle parameters
+                vehicleMass: parseFloat(document.getElementById('vehicleMass').value),
+                dragCoefficient: parseFloat(document.getElementById('dragCoefficient').value),
+                frontalArea: parseFloat(document.getElementById('frontalArea').value),
+                rollingResistance: parseFloat(document.getElementById('rollingResistance').value),
+                wheelRadius: parseFloat(document.getElementById('wheelRadius').value),
+                gearRatio: parseFloat(document.getElementById('gearRatio').value),
+                
+                // Preset information
+                selectedPreset: selectedPreset
+            };
+
+            // Store parameters in localStorage for the main simulation
+            localStorage.setItem('evSimulationParameters', JSON.stringify(parameters));
+            
+            // Redirect to main simulation
+            window.location.href = 'index.html';
+        }
+
+        // Initialize the form
+        updateProgressIndicator();
+        updateNavigationButtons();
+    </script>
+</body>
+</html> 

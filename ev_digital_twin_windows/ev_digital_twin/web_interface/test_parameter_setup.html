@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parameter Setup Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <h1>EV Digital Twin - Parameter Setup Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Set Test Parameters</h2>
+        <p>This will set sample parameters in localStorage to test the loading functionality.</p>
+        <button class="btn-primary" onclick="setTestParameters()">Set Test Parameters</button>
+        <div id="test1-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Load Parameters</h2>
+        <p>This will load parameters from localStorage and display them.</p>
+        <button class="btn-success" onclick="loadAndDisplayParameters()">Load Parameters</button>
+        <div id="test2-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Clear Parameters</h2>
+        <p>This will clear all parameters from localStorage.</p>
+        <button class="btn-danger" onclick="clearParameters()">Clear Parameters</button>
+        <div id="test3-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Navigation</h2>
+        <p>Test the complete parameter setup flow:</p>
+        <a href="launcher.html" class="btn-primary">Go to Launcher</a>
+        <a href="parameter_setup.html" class="btn-success">Go to Parameter Setup</a>
+        <a href="index.html" class="btn-primary">Go to Main Simulation</a>
+    </div>
+
+    <script>
+        function setTestParameters() {
+            const testParams = {
+                selectedPreset: 'sports',
+                batteryCapacity: 85.0,
+                batteryVoltage: 800.0,
+                cellsSeries: 192,
+                cellsParallel: 2,
+                initialSOC: 0.9,
+                initialSOH: 0.95,
+                motorPower: 300.0,
+                motorSpeed: 12000,
+                motorType: 'PMSM',
+                polePairs: 4,
+                motorEfficiency: 0.92,
+                motorHealth: 0.95,
+                vehicleMass: 1800,
+                dragCoefficient: 0.25,
+                frontalArea: 2.0,
+                rollingResistance: 0.008,
+                wheelRadius: 0.32,
+                gearRatio: 10.0
+            };
+            
+            localStorage.setItem('evSimulationParameters', JSON.stringify(testParams));
+            
+            const result = document.getElementById('test1-result');
+            result.innerHTML = '<p class="success">✅ Test parameters set successfully!</p>';
+            result.innerHTML += '<pre>' + JSON.stringify(testParams, null, 2) + '</pre>';
+        }
+        
+        function loadAndDisplayParameters() {
+            const storedParams = localStorage.getItem('evSimulationParameters');
+            const result = document.getElementById('test2-result');
+            
+            if (storedParams) {
+                const params = JSON.parse(storedParams);
+                result.innerHTML = '<p class="success">✅ Parameters loaded successfully!</p>';
+                result.innerHTML += '<pre>' + JSON.stringify(params, null, 2) + '</pre>';
+            } else {
+                result.innerHTML = '<p class="error">❌ No parameters found in localStorage</p>';
+            }
+        }
+        
+        function clearParameters() {
+            localStorage.removeItem('evSimulationParameters');
+            const result = document.getElementById('test3-result');
+            result.innerHTML = '<p class="info">🗑️ Parameters cleared from localStorage</p>';
+        }
+        
+        // Auto-load parameters on page load
+        window.addEventListener('load', function() {
+            loadAndDisplayParameters();
+        });
+    </script>
+</body>
+</html> 
